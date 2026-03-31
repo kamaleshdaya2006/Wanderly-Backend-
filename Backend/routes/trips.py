@@ -28,7 +28,7 @@ def get_trips(user_id):
     cursor.close()
     conn.close()
     return jsonify(trips)
-@trips_bp.route("/", methods=["POST"])
+@trips_bp.route("", methods=["POST"])
 def create_trip():
     data = request.json
 
