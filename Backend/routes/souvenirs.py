@@ -3,7 +3,7 @@ from db import get_connection
 
 souvenirs_bp = Blueprint("souvenirs", __name__)
 
-@souvenirs_bp.route("/souvenirs", methods=["GET"])
+@souvenirs_bp.route("/", methods=["GET"])
 def get_all_souvenirs():
     conn = get_connection()
     cursor = conn.cursor()
@@ -31,7 +31,7 @@ def get_all_souvenirs():
     cursor.close()
     conn.close()
     return jsonify(souvenirs)
-@souvenirs_bp.route("/souvenirs", methods=["POST"])
+@souvenirs_bp.route("/", methods=["POST"])
 def add_souvenir():
     data = request.json
 
