@@ -9,6 +9,8 @@ from routes.souvenirs import souvenirs_bp
 from routes.hiddengems import hidden_gems_bp
 from routes.trips import trips_bp
 from routes.reviews import reviews_bp
+from routes.activities import activities_bp
+
 
 app = Flask(__name__)
 
@@ -29,7 +31,7 @@ app.register_blueprint(souvenirs_bp, url_prefix="/souvenirs")
 app.register_blueprint(hidden_gems_bp, url_prefix="/hidden-gems")
 app.register_blueprint(trips_bp, url_prefix="/trips")
 app.register_blueprint(reviews_bp, url_prefix="/reviews")
-
+app.register_blueprint(activities_bp, url_prefix="/activities")
 @app.route("/")
 def home():
     return "Backend running"
