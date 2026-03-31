@@ -57,3 +57,38 @@ def add_review():
     conn.close()
 
     return jsonify({"message": "Review added"})
+# ----------------------------------------------------
+# GET REVIEWS BY PLACE ID (shortcut for frontend)
+# ----------------------------------------------------
+@reviews_bp.route("/<int:place_id>", methods=["GET"])
+def get_reviews_by_place(place_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT review_id, user_id, rating, review_text, created_at
+            FROM reviews
+            WHERE entity_type = 'place' AND entity_id = %s
+            ORDER BY created_at DESC
+        """, (place_id,))
+
+        reviews = [
+            {
+                "review_id": r[0],
+                "user_id": r[1],
+                "rating": r[2],
+                "review_text": r[3],
+                "created_at": str(r[4])
+            }
+            for r in cursor.fetchall()
+        ]
+
+        return jsonify(reviews)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
