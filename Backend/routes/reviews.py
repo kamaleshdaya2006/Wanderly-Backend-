@@ -5,7 +5,7 @@ reviews_bp = Blueprint("reviews", __name__)
 
 
 
-@reviews_bp.route("/reviews", methods=["GET"])
+@reviews_bp.route("/", methods=["GET"])
 def get_reviews():
     conn = get_connection()
     cursor = conn.cursor()
@@ -34,7 +34,7 @@ def get_reviews():
     cursor.close()
     conn.close()
     return jsonify(reviews)
-@reviews_bp.route("/reviews", methods=["POST"])
+@reviews_bp.route("/", methods=["POST"])
 def add_review():
     data = request.json
 
