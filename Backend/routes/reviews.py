@@ -3,28 +3,6 @@ from db import get_connection
 
 reviews_bp = Blueprint("reviews", __name__)
 
-@reviews_bp.route("/reviews", methods=["POST"])
-def add_review():
-    conn = get_connection()
-    cursor = conn.cursor()
-    data = request.get_json()
-
-    cursor.execute("""
-        INSERT INTO reviews (user_id, rating, review_text, entity_type, entity_id)
-        VALUES (%s, %s, %s, %s, %s)
-    """, (
-        data["user_id"],
-        data["rating"],
-        data["review_text"],
-        data["entity_type"],
-        data["entity_id"]
-    ))
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    return jsonify({"message": "Review added"})
 
 
 @reviews_bp.route("/reviews", methods=["GET"])
