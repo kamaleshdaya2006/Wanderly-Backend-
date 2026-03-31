@@ -13,7 +13,12 @@ from routes.reviews import reviews_bp
 app = Flask(__name__)
 
 # ✅ FIXED CORS (ONLY THIS)
-CORS(app, origins=["https://kamaleshdaya2006.github.io"])
+CORS(
+    app,
+    resources={r"/*": {"origins": "https://kamaleshdaya2006.github.io"}},
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"]
+)
 
 # =========================
 # BLUEPRINTS
