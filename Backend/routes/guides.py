@@ -32,7 +32,7 @@ def get_guides():
     return jsonify(guides)
 
 
-@guides_bp.route("/guides", methods=["POST"])
+@guides_bp.route("/", methods=["POST"])
 def add_guide():
     data = request.json
 
