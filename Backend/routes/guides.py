@@ -3,7 +3,7 @@ from db import get_connection
 
 guides_bp = Blueprint("guides", __name__)
 
-@guides_bp.route("/guides", methods=["GET"])
+@guides_bp.route("/", methods=["GET"])
 def get_guides():
     conn = get_connection()
     cursor = conn.cursor()
