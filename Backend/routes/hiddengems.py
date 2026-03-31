@@ -3,7 +3,7 @@ from db import get_connection
 
 hidden_gems_bp = Blueprint("hidden_gems", __name__)
 
-@hidden_gems_bp.route("/hidden-gems", methods=["GET"])
+@hidden_gems_bp.route("/", methods=["GET"])
 def get_hidden_gems():
     conn = get_connection()
     cursor = conn.cursor()
