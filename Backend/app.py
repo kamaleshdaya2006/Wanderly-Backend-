@@ -15,11 +15,9 @@ app = Flask(__name__)
 # ✅ FIXED CORS (ONLY THIS)
 CORS(
     app,
-    resources={r"/*": {"origins": "https://kamaleshdaya2006.github.io"}},
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"]
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=False
 )
-
 # =========================
 # BLUEPRINTS
 # =========================
