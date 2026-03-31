@@ -45,13 +45,26 @@ def get_place(place_id):
     cursor = conn.cursor()
 
     try:
-        cursor.execute("SELECT * FROM places WHERE place_id=%s", (place_id,))
+        cursor.execute("""
+            SELECT place_id, name, description, image, category
+            FROM places
+            WHERE place_id = %s
+        """, (place_id,))
+
         row = cursor.fetchone()
 
         if not row:
             return jsonify({"error": "Not found"}), 404
 
-        return jsonify({"place_id": row[0], "name": row[1]})
+        return jsonify({
+            "place": {
+                "place_id": row[0],
+                "name": row[1],
+                "description": row[2] or "",
+                "image": row[3],
+                "category": row[4]
+            }
+        })
 
     finally:
         cursor.close()
