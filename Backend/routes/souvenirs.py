@@ -54,3 +54,38 @@ def add_souvenir():
     conn.close()
 
     return jsonify({"message": "Souvenir added"}), 201
+# ----------------------------------------------------
+# GET SOUVENIRS BY PLACE ID
+# ----------------------------------------------------
+@souvenirs_bp.route("/<int:place_id>", methods=["GET"])
+def get_souvenirs_by_place(place_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT souvenir_id, name, description, rating, shop_name
+            FROM souvenirs
+            WHERE place_id = %s
+            ORDER BY rating DESC NULLS LAST
+        """, (place_id,))
+
+        souvenirs = [
+            {
+                "souvenir_id": row[0],
+                "name": row[1],
+                "description": row[2] or "",
+                "rating": float(row[3]) if row[3] else None,
+                "shop_name": row[4]
+            }
+            for row in cursor.fetchall()
+        ]
+
+        return jsonify(souvenirs)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
