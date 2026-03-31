@@ -95,3 +95,39 @@ def add_place():
     conn.close()
 
     return jsonify({"message": "Place added"}), 201
+# ----------------------------------------------------
+# SEARCH PLACES
+# ----------------------------------------------------
+@places_bp.route("/search", methods=["GET"])
+def search_places():
+    query = request.args.get("q", "").strip().lower()
+
+    if not query:
+        return jsonify([])
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT place_id, name, description, image
+            FROM places
+            WHERE LOWER(name) LIKE %s
+            LIMIT 10
+        """, (f"%{query}%",))
+
+        results = [
+            {
+                "place_id": row[0],
+                "name": row[1],
+                "description": row[2] or "",
+                "image": row[3]
+            }
+            for row in cursor.fetchall()
+        ]
+
+        return jsonify(results)
+
+    finally:
+        cursor.close()
+        conn.close()
