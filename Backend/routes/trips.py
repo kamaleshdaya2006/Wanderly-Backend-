@@ -3,7 +3,7 @@ from db import get_connection
 
 trips_bp = Blueprint("trips", __name__)
 
-@trips_bp.route("/trips/<int:user_id>", methods=["GET"])
+@trips_bp.route("/<int:user_id>", methods=["GET"])
 def get_trips(user_id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -28,7 +28,7 @@ def get_trips(user_id):
     cursor.close()
     conn.close()
     return jsonify(trips)
-@trips_bp.route("/trips", methods=["POST"])
+@trips_bp.route("/", methods=["POST"])
 def create_trip():
     data = request.json
 
