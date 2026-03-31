@@ -112,3 +112,38 @@ def add_food():
     finally:
         cursor.close()
         conn.close()
+# ----------------------------------------------------
+# GET FOODS BY PLACE ID
+# ----------------------------------------------------
+@foods_bp.route("/<int:place_id>", methods=["GET"])
+def get_foods_by_place(place_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            SELECT food_id, name, description, rating, shop_name
+            FROM foods
+            WHERE place_id = %s
+            ORDER BY rating DESC NULLS LAST
+        """, (place_id,))
+
+        foods = [
+            {
+                "food_id": row[0],
+                "name": row[1],
+                "description": row[2] or "",
+                "rating": float(row[3]) if row[3] else None,
+                "shop_name": row[4]
+            }
+            for row in cursor.fetchall()
+        ]
+
+        return jsonify(foods)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
